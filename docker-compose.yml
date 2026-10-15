@@ -1,0 +1,51 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: jobpilot
+      POSTGRES_PASSWORD: jobpilot
+      POSTGRES_DB: jobpilot
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U jobpilot"]
+      interval: 5s
+      retries: 10
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--appendonly", "yes", "--maxmemory-policy", "noeviction"]
+    ports:
+      - "6380:6379"
+    volumes:
+      - redisdata:/data
+
+# Production-style stack: docker compose --profile app up -d --build
+  web:
+    profiles: ["app"]
+    build: .
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql://jobpilot:jobpilot@postgres:5432/jobpilot?schema=public
+      REDIS_URL: redis://redis:6379
+      STORAGE_DIR: /data/storage
+    ports: ["3000:3000"]
+    volumes: ["storage:/data/storage"]
+    depends_on: [postgres, redis]
+  worker:
+    profiles: ["app"]
+    build: .
+    command: ["npm", "run", "worker:prod"]
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql://jobpilot:jobpilot@postgres:5432/jobpilot?schema=public
+      REDIS_URL: redis://redis:6379
+      STORAGE_DIR: /data/storage
+      APP_URL: http://web:3000
+    volumes: ["storage:/data/storage"]
+    depends_on: [web]
+volumes:
+  pgdata:
+  redisdata:
+  storage:

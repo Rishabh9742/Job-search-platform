@@ -1,0 +1,64 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222 47% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    --primary: 221 83% 53%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222 47% 11%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 40%;
+    --accent: 210 40% 94%;
+    --accent-foreground: 222 47% 11%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+    --success: 142 71% 35%;
+    --warning: 32 95% 44%;
+    --border: 214 32% 89%;
+    --input: 214 32% 85%;
+    --ring: 221 83% 53%;
+    --radius: 0.6rem;
+  }
+  .dark {
+    --background: 224 30% 8%;
+    --foreground: 210 40% 96%;
+    --card: 224 28% 11%;
+    --card-foreground: 210 40% 96%;
+    --primary: 217 91% 62%;
+    --primary-foreground: 222 47% 8%;
+    --secondary: 217 25% 18%;
+    --secondary-foreground: 210 40% 96%;
+    --muted: 217 25% 16%;
+    --muted-foreground: 215 20% 68%;
+    --accent: 217 25% 20%;
+    --accent-foreground: 210 40% 96%;
+    --destructive: 0 70% 55%;
+    --destructive-foreground: 0 0% 100%;
+    --success: 142 60% 48%;
+    --warning: 38 92% 55%;
+    --border: 217 25% 22%;
+    --input: 217 25% 28%;
+    --ring: 217 91% 62%;
+  }
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "cv11", "ss01";
+  }
+  :focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+  }
+}
+
+.prose-job {
+  white-space: pre-wrap;
+  line-height: 1.6;
+}
